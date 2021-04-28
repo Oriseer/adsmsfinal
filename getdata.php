@@ -3,7 +3,7 @@
 require 'connectDB.php';
 date_default_timezone_set('Singapore');
 $d = date("Y-m-d");
-$t = date("H:i:sa");
+$t = date("H:i:s");
 
 if (isset($_GET['card_uid']) && isset($_GET['device_token'])) {
     $card_uid = $_GET['card_uid'];
@@ -36,7 +36,7 @@ if (isset($_GET['card_uid']) && isset($_GET['device_token'])) {
                         //*****************************************************
                         //An existed Card has been detected for Login or Logout
                         if ($row['add_card'] == 1){
-                        if ($row['device_uid'] == $device_uid || $row['device_uid'] == 0){
+                        if ($row['device_uid'] == $device_uid){
                                 $Uname = $row['username'];
                                 $Number = $row['serialnumber'];
                                 $sql = "SELECT * FROM users_logs WHERE card_uid=? AND checkindate=? AND card_out=0";

@@ -1,8 +1,8 @@
 <?php
 /* Database connection settings */
 	$servername = "localhost";
-    $username = "root";		//put your phpmyadmin username.(default is "root")
-    $password = "";			//if your phpmyadmin has a password put it here.(default is "root")
+    $username = "khel";		//put your phpmyadmin username.(default is "root")
+    $password = "Eimei";			//if your phpmyadmin has a password put it here.(default is "root")
     $dbname = "adsms";
 
 	$conn = mysqli_connect($servername, $username, $password, $dbname);

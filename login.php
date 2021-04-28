@@ -1,6 +1,7 @@
 <?php
+  ini_set('display_errors', 1);
   // Include db config
-  require_once 'psignum/db.php';
+  include 'psignum/db.php';
 
   // Init vars
   $email = $password = '';

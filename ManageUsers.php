@@ -55,7 +55,7 @@ if (!isset($_SESSION['email'])) {
 				<input type="hidden" name="user_id" id="user_id">
 				<input type="text" name="name" id="name" placeholder="User Name...">
 				<input type="text" name="number" id="number" placeholder="Employee ID Number...">
-				<input type="email" name="email" id="email" placeholder="User Email...">
+				<input type="hidden" name="email" id+"email">
 			</fieldset>
 			<fieldset>
 			<legend> Additional Info</legend>

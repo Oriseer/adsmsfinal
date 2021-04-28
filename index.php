@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!$_SESSION['email']) {
+if(!$_SESSION['email']) {
   header("location: login.php");
 }
 ?>
@@ -23,7 +23,9 @@ if (!$_SESSION['email']) {
     </script>
 </head>
 <body>
-<?php include'header.php'; ?>
+<?php include'header.php';
+	ini_set('display_errors', 1);
+ ?>
 <main>
 <section>
   <!--User table-->
@@ -42,7 +44,7 @@ if (!$_SESSION['email']) {
       <tbody class="table-secondary">
         <?php
           //Connect to database
-          require'connectDB.php';
+          include'connectDB.php';
 
             $sql = "SELECT * FROM users WHERE add_card=1 ORDER BY id DESC";
             $result = mysqli_stmt_init($conn);

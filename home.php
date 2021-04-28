@@ -1,4 +1,5 @@
 <?php
+ini_set("display_errors", 1);
 session_start();
 if (!$_SESSION['email']) {
   header("location: login.php");
@@ -24,9 +25,33 @@ if (!$_SESSION['email']) {
     </script>
 </head>
   <body>
+    <!-- Messenger Chat Plugin Code -->
+    <div id="fb-root"></div>
+      <script>
+        window.fbAsyncInit = function() {
+          FB.init({
+            xfbml            : true,
+            version          : 'v10.0'
+          });
+        };
+
+        (function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+      </script>
+
+      <!-- Your Chat Plugin code -->
+      <div class="fb-customerchat"
+        attribution="page_inbox"
+        page_id="106322354744621">
+      </div>
     <?php include'header.php'; ?>
     <br>
-    <div class="chat-container"></div>
+    <!-- <div class="chat-container"></div>
     <script
         src="https://npm-scalableminds.s3.eu-central-1.amazonaws.com/@scalableminds/chatroom@master/dist/Chatroom.js">
     </script>
@@ -41,7 +66,8 @@ if (!$_SESSION['email']) {
             voiceLang: "en-US"
         });
         chatroom.openChat();
-    </script>
+    </script> -->
+
 
      <div>
     <form action="manualopen.php" method="GET">

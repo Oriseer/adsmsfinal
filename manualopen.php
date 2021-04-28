@@ -13,6 +13,7 @@ if (!empty($_GET)) {
     mysqli_stmt_execute($result);
     echo "success";
 }
+
 header("location: index.php");
 }
 
