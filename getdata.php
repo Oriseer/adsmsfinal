@@ -229,5 +229,30 @@ if(isset($_GET['door'])){
 }
 }
 
+if(isset($_GET['second'])){
+    $sql = "SELECT mode FROM door2_mode";
+    $result = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($result) > 0) {
+        while($row = mysqli_fetch_assoc($result)) {
+        if($row['mode'] == 1){
+            echo "open";
+        }
+    }
+    } else {
+        echo "0 results";
+    }
+    $mode = 0;
+    $sql="UPDATE door2_mode SET mode=?";
+    $result = mysqli_stmt_init($conn);
+    if (!mysqli_stmt_prepare($result, $sql)) {
+      echo "SQL_Error_insert_logout1";
+      exit();
+    }
+    else{
+    mysqli_stmt_bind_param($result, "s", $mode);
+    mysqli_stmt_execute($result);
+}
+}
+
 
 ?>

@@ -1,5 +1,4 @@
 <?php
-ini_set("display_errors", 1);
 session_start();
 if (!$_SESSION['email']) {
   header("location: login.php");
@@ -72,7 +71,15 @@ if (!$_SESSION['email']) {
      <div>
     <form action="manualopen.php" method="GET">
       <button class="big-button" name="open">
-      open
+      server room
+    </button>
+    </form>
+  </div>
+
+       <div>
+    <form action="manualopen2.php" method="GET">
+      <button class="big-button" name="open2">
+      cashier room
     </button>
     </form>
   </div>
