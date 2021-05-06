@@ -1,7 +1,6 @@
 <?php
-  ini_set('display_errors', 1);
   // Include db config
-  include 'psignum/db.php';
+  require_once 'psignum/db.php';
 
   // Init vars
   $email = $password = '';
@@ -29,20 +28,18 @@
     // Make sure errors are empty
     if(empty($email_err) && empty($password_err)){
       // Prepare query
-      $sql = 'SELECT name, email, password FROM users WHERE email = ?';
-      $result = mysqli_stmt_init($conn);
-      if (!mysqli_stmt_prepare($result, $sql)) {
-        echo "SQL_Error_Select_device";
-        exit();
-    }
-    else{
-        mysqli_stmt_bind_param($result, "s", $email);
-        mysqli_stmt_execute($result);
-        $resultl = mysqli_stmt_get_result($result);
+      $sql = 'SELECT name, email, password FROM users WHERE email = :email';
+
+      // Prepare statement
+      if($stmt = $pdo->prepare($sql)){
+        // Bind params
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+
         // Attempt execute
-        if($row = mysqli_fetch_assoc($resultl)){
+        if($stmt->execute()){
           // Check if email exists
-          if($row > 1){
+          if($stmt->rowCount() === 1){
+            if($row = $stmt->fetch()){
               $hashed_password = $row['password'];
               if(password_verify($password, $hashed_password)){
                 // SUCCESSFUL LOGIN
@@ -54,17 +51,21 @@
                 // Display wrong password message
                 $password_err = 'The password you entered is not valid';
               }
+            }
           } else {
             $email_err = 'No account found for that email';
           }
         } else {
-          echo "Something went wrong";
-          // Close statement
-          exit();
+          die('Something went wrong');
         }
       }
+      // Close statement
+      unset($stmt);
     }
-}
+
+    // Close connection
+    unset($pdo);
+  }
 ?>
 
 <!DOCTYPE html>
@@ -83,7 +84,7 @@
         <div class="card card-body bg-light mt-5">
           <h2>Login</h2>
           <p>Fill in your credentials</p>
-          <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+          <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">   
             <div class="form-group">
               <label for="email">Email Address</label>
               <input type="email" name="email" class="form-control form-control-lg <?php echo (!empty($email_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $email; ?>">
@@ -97,6 +98,9 @@
             <div class="form-row">
               <div class="col">
                 <input type="submit" value="Login" class="btn btn-success btn-block">
+              </div>
+              <div class="col">
+                <a href="register.php" class="btn btn-light btn-block">No account? Register</a>
               </div>
             </div>
           </form>
