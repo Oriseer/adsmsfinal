@@ -35,6 +35,7 @@ if(!$_SESSION['email']) {
         <tr>
           <th>Name</th>
           <th>Employee ID Number</th>
+	  <th>Email</th>
           <th>Gender</th>
           <th>Card UID</th>
           <th>Date</th>
@@ -60,6 +61,7 @@ if(!$_SESSION['email']) {
                       <TR>
                       <TD><?php echo $row['username'];?></TD>
                       <TD><?php echo $row['serialnumber'];?></TD>
+		      <TD><?php echo $row['email'];?></TD>
                       <TD><?php echo $row['gender'];?></TD>
                       <TD><?php echo $row['card_uid'];?></TD>
                       <TD><?php echo $row['user_date'];?></TD>
