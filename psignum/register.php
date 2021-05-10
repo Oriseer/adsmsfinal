@@ -22,30 +22,24 @@
       $email_err = 'Please enter email';
     } else {
       // Prepare a select statement
-      $sql = 'SELECT id FROM users WHERE email = ?';
+      $sql = 'SELECT id FROM users WHERE email = :email';
 
-      $result = mysqli_stmt_init($conn);
-      if (!mysqli_stmt_prepare($result, $sql)) {
-        echo "SQL_Error_Select_device";
-        exit();
-    }
-    else{
-        mysqli_stmt_bind_param($result, "s", $email);
-        mysqli_stmt_execute($result);
-        $resultl = mysqli_stmt_get_result($result);
-        // Attempt execute
-        if($row = mysqli_fetch_assoc($resultl)){
+      if($stmt = $conn->prepare($sql)){
+        // Bind variables
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+
+        // Attempt to execute
+        if($stmt->execute()){
           // Check if email exists
-          if($row > 1){
-            $email_err = 'email already taken';
+          if($stmt->rowCount() === 1){
+            $email_err = 'Email is already taken';
           }
+        } else {
+          die('Something went wrong');
         }
-         /* else {
-          echo "Something went wrong";
-          // Close statement
-          exit();
-        }*/
       }
+
+      unset($stmt);
     }
 
     // Validate name
@@ -75,22 +69,27 @@
       $password = password_hash($password, PASSWORD_DEFAULT);
 
       // Prepare insert query
-      $sql = 'INSERT INTO users (name, email, password) VALUES (?, ?, ?)';
-      $result = mysqli_stmt_init($conn);
-       if (!mysqli_stmt_prepare($result, $sql)) {
-          echo "SQL_Error_Select_login1";
-          exit();
-        }
-        else{
-            mysqli_stmt_bind_param($result, "sss", $name, $email, $password);
-            mysqli_stmt_execute($result);
-            header('location: login.php');
-            exit();
-          }
+      $sql = 'INSERT INTO users (name, email, password) VALUES (:name, :email, :password)';
 
+      if($stmt = $conn->prepare($sql)){
+        // Bind params
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+
+        // Attempt to execute
+        if($stmt->execute()){
+          // Redirect to login
+          header('location: login.php');
+        } else {
+          die('Something went wrong');
+        }
+      }
+      unset($stmt);
     }
 
-
+    // Close connection
+    unset($conn);
   }
 ?>
 
